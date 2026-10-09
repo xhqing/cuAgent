@@ -1,0 +1,4 @@
+{
+  "defaultProvider": "dashscope",
+  "defaultModel": "qwen3.8-max"
+}

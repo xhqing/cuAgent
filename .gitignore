@@ -1,0 +1,29 @@
+# node_modules 全局兜底
+node_modules/
+
+# 系统杂物
+.DS_Store
+
+# 本机本地配置（机器本地，不提交）
+settings.local.json
+
+# 本机私有指令（不进 git、不公开；agent 客户端每次会话自动加载）
+CLAUDE.local.md
+
+# 临时产物（见全局工作规则：tmp-dir-for-artifacts）
+tmp/
+
+# 产物接力目录（勿公开）
+artifacts/
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 本机密钥通用兜底（保留 .env.example）
+.env
+.env.*
+!.env.example
+
+# 运行时数据目录（本地日志、状态等）
+docs/
