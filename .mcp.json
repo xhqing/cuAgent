@@ -1,8 +1,18 @@
 {
   "mcpServers": {
     "open-computer-use": {
-      "command": "npx",
-      "args": ["-y", "@qwen-code/open-computer-use@0.2.3", "mcp"]
+      "command": "ssh",
+      "args": [
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=10",
+        "mac-mini",
+        "/usr/local/bin/npx",
+        "-y",
+        "@qwen-code/open-computer-use@0.2.3",
+        "mcp"
+      ]
     }
   }
 }

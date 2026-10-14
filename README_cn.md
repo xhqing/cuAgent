@@ -13,11 +13,11 @@
 
 # cuAgent
 
-> 🖱️ **cuAgent**（cu = computer-use）—— 电脑操作员。用 computer-use 能力代替用户操作本机电脑界面：看屏幕、点击、输入、拖拽——把手工重复操作交给 agent。
+> 🖱️ **cuAgent**（cu = computer-use）—— 电脑操作员。用 computer-use 能力代替用户在**专用 Mac** 上操作界面：看屏幕、点击、输入、拖拽——把手工重复操作交给 agent。
 
 [English](README.md)
 
-cuAgent 是一个**专用计算机操作 agent**：它通过 [open-computer-use](https://github.com/QwenLM/open-computer-use) MCP 接入本机 GUI 自动化——读取应用截图与无障碍树，执行点击、输入、拖拽等真实界面操作。用户只需说清目标，剩下的界面操作由 cuAgent 完成。
+cuAgent 是一个**专用计算机操作 agent**：它通过 [open-computer-use](https://github.com/QwenLM/open-computer-use) MCP 接入 GUI 自动化——读取应用截图与无障碍树，执行点击、输入、拖拽等真实界面操作。默认情况下，它操作的是**一台经 SSH 接入的专用 Mac**（如 mac mini），而不是 agent 所在机器的屏幕。用户只需说清目标，剩下的界面操作由 cuAgent 完成。
 
 ---
 
@@ -35,19 +35,20 @@ cuAgent 是一个**专用计算机操作 agent**：它通过 [open-computer-use]
 
 ## 怎么用
 
-1. 在 cuAgent 项目目录里启动支持 MCP 的 agent 客户端（pi / Claude Code）；
-2. 首次使用需**批准本项目的 MCP server**（项目信任 + 一次性批准，属安全闸门）；
-3. macOS 需在「系统设置 → 隐私与安全性」授予**辅助功能**与**屏幕录制**权限；
+1. 准备**目标 Mac**：一台能通过 SSH 登入的机器（macOS 14+），并在其「系统设置 → 隐私与安全性」中授予**辅助功能**与**屏幕录制**；
+2. 在 cuAgent 项目目录里启动支持 MCP 的 agent 客户端（pi / Claude Code）；
+3. 首次使用需**批准本项目的 MCP server**（项目信任 + 一次性批准，属安全闸门）；
 4. 直接对 agent 说清要操作什么（哪个应用、做什么、期望结果）。
 
-配置在项目根 [`.mcp.json`](.mcp.json)：`open-computer-use` 由 `npx` 拉起 `@qwen-code/open-computer-use` 固定版本——**只在本项目内启用、不全局安装**。项目默认模型在 `.pi/settings.json` 中固定为 `dashscope/qwen3.8-max`（取其图像输入能力以处理截图），可自行更换。
+配置在项目根 [`.mcp.json`](.mcp.json)：`open-computer-use` **经 SSH 在目标机器上拉起**（`ssh mac-mini … npx @qwen-code/open-computer-use@0.2.3 mcp`——`mac-mini` 换成你自己的 SSH 别名）——固定版本、**只在本项目内启用、不全局安装**。项目不固定模型——跟随 agent 客户端的默认配置；注意 computer-use 需要能读图的模型（要处理截图）。
 
 ---
 
 ## 安全边界
 
+- **目标设备铁律**：computer-use 在专用机器上执行（经 SSH 接入），**默认绝不用在本机屏幕上**；确需本机使用须取得用户明确授权（授权协议见 `.pi/skills/computer-use/`）；
 - **破坏性 / 对外可见的动作先确认**：发送、删除、购买、对外发布等动作，动手前先向用户确认；
-- **不打扰用户**：后台操作应用、不抢前台窗口、不随意覆盖剪贴板；
+- **不打扰用户**：不动本机窗口与前台、不随意覆盖剪贴板；
 - **范围限定**：computer-use 能力只存在于本项目，其它项目与全局配置均不启用。
 
 ---
