@@ -53,7 +53,7 @@ ssh mac-mini 'zsh -l -c "npx -y @qwen-code/open-computer-use@0.2.3 doctor"'
 
 ## 执行操作（两条路都落在 mac-mini 上）
 
-**MCP 路径（常规）**：本项目的 MCP 已配置为经 SSH 在 mac-mini 上拉起（见 `.mcp.json`），对 `mcp` / `mcp__open_computer_use` 工具的调用天然在 mac-mini 生效。操作纪律照项目 `CLAUDE.md`：
+**MCP 路径（常规）**：本项目的 MCP 已配置为经 SSH 在 mac-mini 上拉起（见 `.mcp.json`），对 `mcp` / `mcp__open_computer_use` 工具的调用天然在 mac-mini 生效。操作纪律照项目 `AGENTS.md`：
 
 - 每轮操作前先 `get_app_state` 拿最新状态；
 - 优先按元素索引操作（比坐标稳），每步动作后用结果或再次 `get_app_state` 验证；
