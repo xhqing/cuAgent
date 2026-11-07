@@ -35,4 +35,4 @@
 
 ## 你的位置
 
-独立工具型 agent、不分组、直属用户、独立于销售流水线；注册表条目见全局 `~/.claude/docs/agents-registry.md`。
+独立工具型 agent、不分组、直属用户、独立于销售流水线；注册表条目见全局 `~/.pi/agent/docs/agents-registry.md`。
