@@ -54,6 +54,6 @@ cuAgent 是一个**专用计算机操作 agent**：它通过 [open-computer-use]
 
 ## 许可与署名
 
-版权所有 (c) 2026 All Contributors，基于 [MIT License](LICENSE.md) 授权。
+版权所有 (c) 2026 xhqing，基于 [MIT License](LICENSE.md) 授权。
 
 **署名要求**：如你基于本项目衍生或再分发，请保留版权声明与许可文件，并注明来源：[cuAgent](https://github.com/xhqing/cuAgent)。
