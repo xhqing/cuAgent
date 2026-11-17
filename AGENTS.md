@@ -28,7 +28,7 @@
 
 ## 工具与环境
 
-- **MCP 配置**：项目根 `.mcp.json`——`open-computer-use` **经 SSH 在 mac-mini 上拉起**（`ssh mac-mini … npx @qwen-code/open-computer-use@0.2.3 mcp`，固定版本、不在本机装全局；mac-mini 需 macOS 14+，当前 12.4 未就绪、升级前 computer-use 整体不可用，见 TODO T1）；
+- **MCP 配置**：项目根 `.mcp.json`——`open-computer-use` **经 SSH 在 mac-mini 上拉起**（`ssh mac-mini … npx @qwen-code/open-computer-use@0.2.3 mcp`，固定版本、不在本机装全局；mac-mini 已升级到 macOS 15.8.3（2026-11-18），当前待完成 GUI 授权与实测，见 TODO T2 / T3）；
 - **computer-use 流程 skill**：`.pi/skills/computer-use/`——设备铁律、登入与就绪检查、执行路径、本机例外授权协议、mac-mini 搭建与排查；
 - 首次在 MCP 客户端（pi / Claude Code）中使用本项目时，需**批准本项目的 MCP server**（项目信任 + 一次性批准，属安全闸门）；
 - 通用能力（anysearch 实时搜索等）：从全局 `~/.claude/` 或 CapabilityManagerAgent 的 `claude/` 开源镜像获取。

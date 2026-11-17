@@ -4,4 +4,6 @@
 
 ## 🔴 红色（不修会亏钱 / 安全事故 / 结论错误 / 核心功能不可用）
 
-- [ ] **T1** mac-mini 升级到 macOS 14+ 并完成 computer-use 首次打通：open-computer-use 的 macOS 运行时要求 14.0+，当前 mac-mini（macOS 12.4）启动即 dyld 崩溃（2026-10-14 实测，AppKit 缺符号）；升级前 computer-use 整体不可用（本机已按规禁用）。升级后按 `.pi/skills/computer-use/references/mac-mini-setup.md` 完成安装、辅助功能 / 屏幕录制授权、验证梯子，并实测「SSH 会话直起 MCP 的 GUI 上下文是否可用」（若被系统拦，评估 launchctl / LaunchAgent 备选方案）。系统升级会打断 mac-mini、属用户设备决策，动手前先取得用户同意。（记录：2026-10-14 20:30）
+- [ ] **T2** 在 mac-mini 屏幕上完成 computer-use 的两项系统授权：先登录桌面（当前停在登录窗口），再按 `.pi/skills/computer-use/references/mac-mini-setup.md` 第 3 节跑 `open-computer-use doctor` 引导，给「辅助功能」与「屏幕录制」添加实际运行主体（Open Computer Use.app / 其 launcher），最后再跑一次 doctor 确认两项就绪。改系统安全设置前先跟用户打招呼。（记录：2026-11-18 01:40）
+
+- [ ] **T3** 实测「SSH 会话直起 MCP 的 GUI 上下文是否可用」并打通 computer-use：按 setup 文档第 5 节梯子逐层验证（SSH 通道 → 桌面登录 → doctor → list-apps → snapshot），再经 MCP 网关实测一次完整工具调用（如 `list_apps`）；若 SSH 直起被系统拦（截图黑屏 / 权限错），评估 `launchctl asuser` 与「桌面会话内 LaunchAgent 转发」两条备选路径。结果记入 CHANGELOG，并把 README / AGENTS 里的「待打通」表述收尾。（记录：2026-11-18 01:40）
