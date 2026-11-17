@@ -1,6 +1,6 @@
 # CHANGELOG
 
-本文件记录本项目（cuAgent）每次文件增删改查的变更，写清「为什么改」和「改了什么」。版本号以项目根 `VERSION` 文件为唯一权威（当前 0.1.1）。
+本文件记录本项目（cuAgent）每次文件增删改查的变更，写清「为什么改」和「改了什么」。版本号以项目根 `VERSION` 文件为唯一权威（当前 0.2.0）。
 
 ### 新增（CI 门禁：validate 检查 + main 分支 strict 保护）
 
@@ -9,6 +9,16 @@
 - **边界**：检查只做确定性、低误报的项目（required check 一旦误报就会卡住正常 PR，所以宁可少查）；不改动仓库任何原有内容。
 
 ## [未发布]
+
+### 变更（mac-mini 升级到 macOS 15.8.3：文档现状同步，T1 拆分归档）
+
+- **为什么改**：computer-use 的硬门槛是 macOS 14+，此前 mac-mini 停在 12.4，一启动就 dyld 崩溃（AppKit 缺符号），整套能力不可用。2026-11-17 深夜至 2026-11-18 凌晨已把 mac-mini 从 12.4 升到 15.8.3（Build 24H241）：先下 15.8.1 完整安装器、用 launchd 以 root 跑 `startosinstall` 升到 15.8.1，再 `softwareupdate --install` 升到 15.8.3。实测 dyld 崩溃消失（`version` 子命令正常返回 0.2.3），但机器停在登录窗口、GUI 权限未授权，能力仍未打通——文档里的「12.4 未就绪」表述已过时，必须换成现状。
+- **改了什么**（2026-11-18 01:40）：
+  - `AGENTS.md`「工具与环境」的 MCP 配置段：改为「已升级到 macOS 15.8.3（2026-11-18），当前待完成 GUI 授权与实测，见 TODO T2 / T3」；
+  - `TODO.md`：T1 按「已更新」规则移入新建的 `TODO-archive.md`（原有文字一字不动）；剩余工作拆为 **T2**（在 mac-mini 屏幕上授予辅助功能 / 屏幕录制并跑 doctor 复核）与 **T3**（SSH 会话直起 MCP 的 GUI 上下文实测，含 `launchctl asuser` / LaunchAgent 两条备选路径）；
+  - `.pi/skills/computer-use/references/mac-mini-setup.md`：第 1 节补「当前状态（2026-11-18）」，标明升级已完成、dyld 崩溃消失、`mcp` 当前报 `Timed out waiting for Open Computer Use.app agent to start.`（因无 GUI 会话），并把原 12.4 崩溃症状标为「留作排查参考」；新增第 8 节「升级后的坑」——登录前用户级服务全停、Command Line Tools 被清空导致 `git` 不可用、系统代理指向未启动的本机代理、第三方系统扩展需重新批准、Tailscale 需手动 up；锁屏检测条目补注「macOS 15.8.3 上未复验」；
+  - 顺带修正头部遗留的版本号描述（0.1.1 → 0.2.0，与 `VERSION` 对齐）。
+- **回归检查**：SKILL.md 与两份 README 的「macOS 14+」要求仍成立、无需改动；TODO 编号连续（T1 归档保留编号，新增 T2 / T3）；文档内所有 TODO 引用已指向新编号。
 
 ### 变更（项目规则文件本体统一改为 `AGENTS.md`，`CLAUDE.md` 弃用，2026-11-05）
 
