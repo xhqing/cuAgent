@@ -10,6 +10,18 @@
 
 ## [未发布]
 
+### 变更（computer-use 打通收尾：T2 / T3 结项、环境现状与固定安装路径）
+
+- **为什么改**：2026-11-18 下午 mac-mini 上的 computer-use 已实测打通（两项 GUI 权限授予、固定路径安装、SSH 直起可用），此前文档与 TODO 里的「待授权 / 待实测 / 待打通」表述全部过时。另外三件事必须记下来，否则下次踩坑：① **TCC 权限绑定 App 的实际路径**——npx 形态每次落在 `~/.npm/_npx/<hash>/`，缓存被清就换目录、已授予的辅助功能 / 屏幕录制随之失效；② **分辨率改成原生 1920x1080**（displayplacer）后全屏截图从 3840x2160 降到 1920x1080，对截图体积与坐标精度都更友好；③ **用户级服务全是 LaunchAgent**（xpilot / Syncthing / Tailscale / pi），机器停在登录窗口时一律不启动——SSH 通但代理不通 / 同步不动，先查登录状态，别当网络故障排查。
+- **改了什么**（2026-11-18 13:55）：
+  - `.mcp.json`：`open-computer-use` 的启动命令从 `npx -y @qwen-code/open-computer-use@0.2.3 mcp` 改为 mac-mini 上的固定安装路径 `~/.local/node/bin/open-computer-use mcp`（原因同上①，版本仍固定 0.2.3，参数结构不变）；
+  - `.pi/skills/computer-use/references/mac-mini-setup.md`：新增第 0 节「环境现状（mac-mini 实况，2026-11-18 实测）」——系统版本、固定安装路径与 App 位置、`doctor` 输出、已实测链路、1920x1080 via displayplacer（含复现命令与屏 id）、LaunchAgent 与登录窗口的关系；第 1 节「当前状态」改为指向该节；第 2 节「一次性安装」改为实际采用的 `npm i -g --prefix ~/.local/node` 形态并说明为何不用 npx / `/usr/local`；第 3 节补「两项均已授予」；第 5 节补「①~⑤ 全通」；第 7 节把「SSH 会话里的 GUI 上下文限制（待实测）」改写为「已实测可用，不需要 `launchctl asuser` / LaunchAgent 转发」（两条备选路径作废）；第 8 节新增欢迎向导（MiniBuddy）卡 Apple 账号登录的处理，并把 Command Line Tools 的处理升级为实测可用的 `sudo softwareupdate --install "Command Line Tools for Xcode-16.4"` 加「残留安装器窗口会进截图」的提醒；
+  - `.pi/skills/computer-use/SKILL.md`：③「工具与权限」只留固定路径命令 + `doctor` 正常输出示例，删掉 npx 备选并写明「不要改回 npx」的原因；末尾排查段补「先看环境现状」；
+  - `AGENTS.md`：「工具与环境」的 MCP 配置段改为「固定安装路径 + 不要用 npx + 已打通」；权限条目改为「已授予，换机 / 换安装路径才需重授」；顺带把「MCP 客户端（pi / Claude Code）」改为只留 pi（本项目只用 pi）；
+  - `TODO.md` / `TODO-archive.md`：T2 / T3 标 ✅ 已完成并归档（原文字不动、追加完成说明），T1 追加「拆出的 T2 / T3 已完成」的收口补记；新增 **T5**（🟠 pi 的 `mcp` 网关连不上，待可交互会话确认）与 **T4**（🟡 是否给 mac-mini 开自动登录）。
+- **实测记录**（2026-11-18 13:45–13:55，本机经 SSH 在 mac-mini 上跑）：`sw_vers` = 15.8.3（24H241）；`stat -f %Su /dev/console` = `mac`（已登录桌面）；`doctor` = `accessibility=granted, screenRecording=granted`；`list-apps` 返回 Notion / Qwen / Terminal / Finder / DingTalk / Chrome 等；`snapshot com.apple.finder` 返回完整无障碍树；`call get_app_state` 返回无障碍树 + `image/png`；对 SSH 直起的 `~/.local/node/bin/open-computer-use mcp` 手工走 JSON-RPC（initialize → tools/list → tools/call `list_apps`）全部成功；`displayplacer list` 显示 1920x1080 @ 60Hz、scaling off；`xpilot status` = Running（SOCKS 1080 / HTTP 1087）；`git version 2.39.5`。**未通过**：本会话的 pi `mcp` 网关一直返回 `MCP initialization is still in progress`（已记 T5，与服务端可用性无关）。
+- **回归检查**：SKILL.md 的 `description` 未动，`check_description.py` 仍 PASS（440/1024）；`.mcp.json` 只换启动命令，`ssh -o BatchMode=yes mac-mini '~/.local/node/bin/open-computer-use mcp'` 已实测可用；两份 README 的「macOS 14+ / 授予两项权限」属通用要求，仍然成立、无需改动。
+
 ### 变更（mac-mini 升级到 macOS 15.8.3：文档现状同步，T1 拆分归档）
 
 - **为什么改**：computer-use 的硬门槛是 macOS 14+，此前 mac-mini 停在 12.4，一启动就 dyld 崩溃（AppKit 缺符号），整套能力不可用。2026-11-17 深夜至 2026-11-18 凌晨已把 mac-mini 从 12.4 升到 15.8.3（Build 24H241）：先下 15.8.1 完整安装器、用 launchd 以 root 跑 `startosinstall` 升到 15.8.1，再 `softwareupdate --install` 升到 15.8.3。实测 dyld 崩溃消失（`version` 子命令正常返回 0.2.3），但机器停在登录窗口、GUI 权限未授权，能力仍未打通——文档里的「12.4 未就绪」表述已过时，必须换成现状。

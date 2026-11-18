@@ -41,15 +41,12 @@ ssh mac-mini 'ioreg -n Root -d1 | grep -i "CGSSessionScreenIsLocked"'   # 无输
 **③ 工具与权限**
 
 ```bash
-# 已全局安装（推荐）：
 ssh mac-mini 'zsh -l -c "open-computer-use doctor"'
-# 未安装（npx 固定版本，本项目 .mcp.json 用的这个形态）：
-ssh mac-mini 'zsh -l -c "npx -y @qwen-code/open-computer-use@0.2.3 doctor"'
 ```
 
-`doctor` 报缺权限 → 需在 **mac-mini 的屏幕**上给「辅助功能」和「屏幕录制」授权；报系统版本不支持 → 见 `references/mac-mini-setup.md` 的系统要求一节，先报给用户，别绕路。
+正常输出一行 `Permissions: accessibility=granted, screenRecording=granted`（2026-11-18 实测如此）。报缺权限 → 需在 **mac-mini 的屏幕**上补授「辅助功能」/「屏幕录制」；报系统版本不支持 → 见 `references/mac-mini-setup.md` 的系统要求一节，先报给用户，别绕路。
 
-> mac-mini 的非登录 SSH 环境 PATH 里没有 `/usr/local/bin`（node / npx / 全局 CLI 都装在那里），直接 `ssh mac-mini 'npx ...'` 会 command not found——要么用上面的 `zsh -l -c` 包一层，要么写绝对路径。
+> CLI 已装在 mac-mini 的固定路径 `~/.local/node/bin/open-computer-use`（`.mcp.json` 指向同一路径）。**不要换回 `npx -y …`**：npx 每次落在 `~/.npm/_npx/<hash>/`，缓存被清就换 app 路径，已授予的 TCC 权限随之失效。非登录 SSH 的 PATH 实测已含 `~/.local/node/bin`，保险起见仍可写绝对路径或 `zsh -l -c` 包一层。
 
 ## 执行操作（两条路都落在 mac-mini 上）
 
@@ -93,4 +90,4 @@ ssh mac-mini 'zsh -l -c "open-computer-use call --calls-file /tmp/cu-calls.json"
 
 ## 排查
 
-连不上 / 权限没就绪 / 操作失败时，读 `references/mac-mini-setup.md`：SSH 三种失败形态、macOS 版本要求（14+）、辅助功能与屏幕录制授权、桌面会话与锁屏、防睡眠、验证命令梯子、已知坑与备选方案。
+连不上 / 权限没就绪 / 操作失败时，读 `references/mac-mini-setup.md`：先看头部的「环境现状」（当前实况与已实测链路），再看 SSH 三种失败形态、macOS 版本要求（14+）、辅助功能与屏幕录制授权、桌面会话与锁屏、防睡眠、验证命令梯子、已知坑与备选方案。

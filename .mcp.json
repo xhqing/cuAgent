@@ -8,9 +8,7 @@
         "-o",
         "ConnectTimeout=10",
         "mac-mini",
-        "/usr/local/bin/npx",
-        "-y",
-        "@qwen-code/open-computer-use@0.2.3",
+        "~/.local/node/bin/open-computer-use",
         "mcp"
       ]
     }
