@@ -10,6 +10,18 @@
 
 ## [未发布]
 
+### 变更（项目退役：cuAgent 角色注销，computer-use 能力已上收 pi 全局层）
+
+- **为什么改**：2026-11-18 用户决定**取消 cuAgent 这个智能体、从团队名册撤销**，同时把 computer-use 提升为 pi 的全局能力——任何 agent 都能用，规则改为「专用自动化机（macmini）直接可用、用户本机需当次授权」。本仓库因此不再承载任何活跃职责：继续留着项目级 MCP 配置与守卫会和全局配置冲突（同一能力两处注册），留着操作流程 skill 也会误导后来的会话按已失效的入口走。
+- **改了什么**（2026-11-18 14:10）：
+  - `README.md` / `README_cn.md`：顶部加退役说明（角色已注销、能力迁入 pi 全局、仓库保留为存档不再维护）；正文改为过去时并补「computer-use 现在在哪」一节（全局注册位置、启动器、守卫与授权规则）；新增「存档：mac-mini 环境」一节，把原 `.pi/skills/computer-use/references/mac-mini-setup.md` 里仍有价值的知识并进来（macOS 15.8.3、固定安装路径与 TCC 授权的绑定关系、两项权限、displayplacer 1920x1080、LaunchAgent 与登录窗口的关系、验证梯子）；Type 徽章由 `AI Agent` 改为 `Archived`；
+  - `AGENTS.md`：重写为退役声明——不再作为活跃 Agent 维护，只做存档维护，并指明 computer-use 现在的位置与授权规则；
+  - **删除 `.mcp.json`**（能力已全局，项目级注册会与 `~/.pi/agent/mcp-adapter.json` 冲突）；
+  - **删除 `.pi/extensions/computer-use-guard.ts`**（守卫已在全局 `~/.pi/agent/extensions/computer-use-guard.ts`）；
+  - **删除 `.pi/skills/computer-use/`**（`SKILL.md` + `references/mac-mini-setup.md`）——其中有效的 mac-mini 环境知识已合并进两份 README，其余为项目级操作流程，随项目停用一并作废；
+  - `TODO.md` / `TODO-archive.md`：T4（是否给 mac-mini 开自动登录）与 T5（pi 的 mcp 网关 init timeout）标 ✅**已放弃**并归档——项目退役，T5 的前提（项目级 MCP 配置）已随 `.mcp.json` 删除，T4 的关注点随能力上收转向全局层；T1 / T2 / T3 此前已归档为完成。
+- **回归检查**：README 双语信息点一致（退役说明、能力新位置、mac-mini 存档资料、许可段四块对应）；徽章与正文口径一致（Type 已改 Archived）；不再有指向已删除文件的活链接——正文提到 `.mcp.json` / `.pi/skills/…` / `.pi/extensions/…` 时都明确写成历史或已删除。
+
 ### 变更（computer-use 打通收尾：T2 / T3 结项、环境现状与固定安装路径）
 
 - **为什么改**：2026-11-18 下午 mac-mini 上的 computer-use 已实测打通（两项 GUI 权限授予、固定路径安装、SSH 直起可用），此前文档与 TODO 里的「待授权 / 待实测 / 待打通」表述全部过时。另外三件事必须记下来，否则下次踩坑：① **TCC 权限绑定 App 的实际路径**——npx 形态每次落在 `~/.npm/_npx/<hash>/`，缓存被清就换目录、已授予的辅助功能 / 屏幕录制随之失效；② **分辨率改成原生 1920x1080**（displayplacer）后全屏截图从 3840x2160 降到 1920x1080，对截图体积与坐标精度都更友好；③ **用户级服务全是 LaunchAgent**（xpilot / Syncthing / Tailscale / pi），机器停在登录窗口时一律不启动——SSH 通但代理不通 / 同步不动，先查登录状态，别当网络故障排查。
