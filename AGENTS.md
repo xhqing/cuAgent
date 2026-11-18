@@ -23,14 +23,14 @@
 - **破坏性 / 对外可见的动作先问用户**：发送、删除、购买、对外发布等，动手前先向用户确认；
 - **不打扰用户**：操作发生在 mac-mini 上（不抢本机前台、不动本机窗口）；别随意覆盖剪贴板（除非用户要求）；
 - **能力范围仅限本项目**：computer-use 只在本项目（项目级 MCP）启用，不得全局安装、不得在其它项目启用；
-- **mac-mini** 首次使用需在其屏幕上给「辅助功能」与「屏幕录制」授权（macOS 14+ 要求见 skill 的 `references/mac-mini-setup.md`）；
+- **mac-mini** 的两项 GUI 权限（「辅助功能」/「屏幕录制」）已于 2026-11-18 授予完毕，无需再动；换机、换安装路径之后才需在其屏幕上重授（见 skill 的 `references/mac-mini-setup.md`）；
 - 通用工作纪律（读取优先 / 增改查优先 / 临时产物放 `tmp/` / 汇报前验证）见全局 `~/.pi/agent/AGENTS.md`「工作规则」节。
 
 ## 工具与环境
 
-- **MCP 配置**：项目根 `.mcp.json`——`open-computer-use` **经 SSH 在 mac-mini 上拉起**（`ssh mac-mini … npx @qwen-code/open-computer-use@0.2.3 mcp`，固定版本、不在本机装全局；mac-mini 已升级到 macOS 15.8.3（2026-11-18），当前待完成 GUI 授权与实测，见 TODO T2 / T3）；
+- **MCP 配置**：项目根 `.mcp.json`——`open-computer-use` **经 SSH 在 mac-mini 上拉起**，用 mac-mini 上的**固定安装路径** `~/.local/node/bin/open-computer-use`（版本固定 0.2.3，不在本机装）；**不要改回 `npx`**——npx 缓存被清就换 app 路径，已授予的 TCC 权限随之失效。mac-mini 已是 macOS 15.8.3，GUI 权限已授、computer-use 已实测打通（`list_apps` / `snapshot` / `get_app_state` 均正常），实况与排查见 `.pi/skills/computer-use/references/mac-mini-setup.md` 的「环境现状」一节；
 - **computer-use 流程 skill**：`.pi/skills/computer-use/`——设备铁律、登入与就绪检查、执行路径、本机例外授权协议、mac-mini 搭建与排查；
-- 首次在 MCP 客户端（pi / Claude Code）中使用本项目时，需**批准本项目的 MCP server**（项目信任 + 一次性批准，属安全闸门）；
+- 首次在 MCP 客户端（pi）中使用本项目时，需**批准本项目的 MCP server**（项目信任 + 一次性批准，属安全闸门）；
 - 通用能力（anysearch 实时搜索等）：从全局 `~/.claude/` 或 CapabilityManagerAgent 的 `claude/` 开源镜像获取。
 
 ## 你的位置
